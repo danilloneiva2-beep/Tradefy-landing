@@ -160,6 +160,19 @@ svg.curve{width:100%; height:auto; display:block; margin-top:6px;}
 
 /* ---------- PRICING ---------- */
 .pricing-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:24px; max-width:760px; margin:0 auto;}
+
+.billing-toggle{display:flex; justify-content:center; gap:6px; margin-bottom:36px;}
+.billing-btn{
+  font-family:'Inter',sans-serif; font-weight:600; font-size:13.5px; cursor:pointer;
+  padding:10px 18px; border-radius:10px; border:1px solid var(--border); background:var(--surface); color:var(--muted);
+  display:flex; align-items:center; gap:8px; transition:all .15s;
+}
+.billing-btn.active{background:var(--green); color:#06280F; border-color:var(--green);}
+.billing-btn .billing-save{
+  font-size:10.5px; font-weight:700; background:rgba(6,40,15,.18); color:inherit;
+  padding:2px 7px; border-radius:20px;
+}
+.billing-btn:not(.active) .billing-save{background:var(--green-soft); color:var(--green);}
 .price-card{
   background:var(--surface); border:1px solid var(--border); border-radius:20px; padding:34px;
   position:relative; display:flex; flex-direction:column;
@@ -383,10 +396,19 @@ footer{border-top:1px solid var(--border); padding:48px 0 32px;}
       <span class="section-eyebrow">Planos</span>
       <h2>Um plano pra cada momento da sua operação.</h2>
     </div>
+
+    <div class="billing-toggle">
+      <button type="button" class="billing-btn active" data-billing="monthly">Mensal</button>
+      <button type="button" class="billing-btn" data-billing="annual">Anual <span class="billing-save">2 meses grátis</span></button>
+    </div>
+
     <div class="pricing-grid">
       <div class="price-card">
         <h3>Starter</h3>
-        <div class="price-amount">R$ 29,90<span>/mês</span></div>
+        <div class="price-amount">
+          <span class="price-monthly">R$ 29,90<span>/mês</span></span>
+          <span class="price-annual" hidden>R$ 299<span>/ano</span></span>
+        </div>
         <p class="price-desc">Pra quem está estruturando a rotina de registro.</p>
         <ul class="price-features">
           <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg> 1 conta conectada</li>
@@ -394,12 +416,15 @@ footer{border-top:1px solid var(--border); padding:48px 0 32px;}
           <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg> Calendário de performance</li>
           <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg> Relatórios básicos</li>
         </ul>
-        <a href="https://pay.cakto.com.br/5s3oi7z_988253" target="_blank" rel="noopener" class="btn btn-outline">Assinar Starter</a>
+        <a href="https://pay.cakto.com.br/5s3oi7z_988253" target="_blank" rel="noopener" class="btn btn-outline plan-link" data-monthly="https://pay.cakto.com.br/5s3oi7z_988253" data-annual="#">Assinar Starter</a>
       </div>
       <div class="price-card highlight">
         <span class="price-tag">Mais popular</span>
         <h3>Pro</h3>
-        <div class="price-amount">R$ 59,90<span>/mês</span></div>
+        <div class="price-amount">
+          <span class="price-monthly">R$ 59,90<span>/mês</span></span>
+          <span class="price-annual" hidden>R$ 599<span>/ano</span></span>
+        </div>
         <p class="price-desc">Pra quem opera múltiplas contas e quer análise completa.</p>
         <ul class="price-features">
           <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg> Contas ilimitadas</li>
@@ -407,7 +432,7 @@ footer{border-top:1px solid var(--border); padding:48px 0 32px;}
           <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg> Filtro por conta no dashboard</li>
           <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg> Suporte prioritário</li>
         </ul>
-        <a href="https://pay.cakto.com.br/37y8i8b_988948" target="_blank" rel="noopener" class="btn btn-primary">Assinar Pro</a>
+        <a href="https://pay.cakto.com.br/37y8i8b_988948" target="_blank" rel="noopener" class="btn btn-primary plan-link" data-monthly="https://pay.cakto.com.br/37y8i8b_988948" data-annual="#">Assinar Pro</a>
       </div>
     </div>
   </div>
@@ -472,6 +497,27 @@ footer{border-top:1px solid var(--border); padding:48px 0 32px;}
     if (closeBtn) closeBtn.addEventListener('click', closeMenu);
     if (overlay) overlay.addEventListener('click', closeMenu);
     links.forEach(function (link) { link.addEventListener('click', closeMenu); });
+  })();
+
+  (function () {
+    var billingBtns = document.querySelectorAll('.billing-btn');
+    var monthlyEls = document.querySelectorAll('.price-monthly');
+    var annualEls = document.querySelectorAll('.price-annual');
+    var planLinks = document.querySelectorAll('.plan-link');
+
+    function setBilling(mode) {
+      billingBtns.forEach(function (b) { b.classList.toggle('active', b.dataset.billing === mode); });
+      monthlyEls.forEach(function (el) { el.hidden = mode !== 'monthly'; });
+      annualEls.forEach(function (el) { el.hidden = mode !== 'annual'; });
+      planLinks.forEach(function (a) {
+        var url = mode === 'annual' ? a.dataset.annual : a.dataset.monthly;
+        if (url) a.setAttribute('href', url);
+      });
+    }
+
+    billingBtns.forEach(function (b) {
+      b.addEventListener('click', function () { setBilling(b.dataset.billing); });
+    });
   })();
 </script>
 
