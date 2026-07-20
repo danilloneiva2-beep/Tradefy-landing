@@ -205,6 +205,17 @@ svg.curve{width:100%; height:auto; display:block; margin-top:6px;}
 
 /* ---------- FOOTER ---------- */
 footer{border-top:1px solid var(--border); padding:48px 0 32px;}
+
+.wa-float{
+  position:fixed; bottom:24px; right:24px; z-index:80;
+  width:58px; height:58px; border-radius:50%;
+  background:#25D366; display:flex; align-items:center; justify-content:center;
+  box-shadow:0 8px 24px rgba(0,0,0,.35); transition:transform .15s;
+}
+.wa-float:hover{transform:scale(1.08);}
+@media (max-width:860px){
+  .wa-float{ width:52px; height:52px; bottom:18px; right:18px; }
+}
 .footer-row{display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:32px; margin-bottom:36px;}
 .footer-brand .brand{margin-bottom:12px;}
 .footer-brand p{font-size:13px; color:var(--muted); max-width:260px; line-height:1.6;}
@@ -475,6 +486,10 @@ footer{border-top:1px solid var(--border); padding:48px 0 32px;}
     </div>
   </div>
 </footer>
+
+<a href="https://wa.me/5511993283482?text=Ol%C3%A1!%20Vim%20do%20site%20do%20Tradefy%20e%20queria%20tirar%20uma%20d%C3%BAvida." target="_blank" rel="noopener" class="wa-float" aria-label="Falar no WhatsApp">
+  <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21h.01c5.46 0 9.9-4.45 9.9-9.9C21.96 6.45 17.5 2 12.04 2Zm5.9 14.02c-.25.7-1.45 1.33-2 1.42-.51.08-1.15.11-1.86-.12-.43-.14-.98-.32-1.68-.62-2.96-1.28-4.89-4.26-5.04-4.46-.15-.2-1.21-1.6-1.21-3.06s.77-2.17 1.04-2.47c.27-.3.6-.37.8-.37h.57c.18 0 .43-.07.66.51.25.61.85 2.11.92 2.26.07.15.12.33.02.53-.1.2-.15.32-.3.5-.15.18-.31.4-.44.53-.15.15-.3.31-.13.6.17.3.76 1.26 1.64 2.04 1.13 1.01 2.08 1.32 2.38 1.47.3.15.47.13.65-.08.18-.2.75-.87.95-1.17.2-.3.4-.24.65-.15.27.1 1.71.81 2 .96.3.15.5.22.57.35.08.13.08.75-.17 1.45Z"/></svg>
+</a>
 
 <script>
   (function () {
